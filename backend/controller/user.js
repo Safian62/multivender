@@ -58,7 +58,7 @@ router.post("/create-user", upload.single("file"), async (req, resp, next) => {
     };
 
     const activationToken = createActivationToken(user);
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const activationUrl = `https://multivender-kzk1.vercel.app/activation/${activationToken}`;
 
     await sendMail({
       email: user.email,

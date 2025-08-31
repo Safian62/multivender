@@ -4,7 +4,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const path = require('path')
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -13,9 +13,9 @@ app.use(
     credentials: true,
   })
 );
-app.use("/", express.static("uploads"));
-app.use("/", (req,resp)=>{
-  resp.send('Hello world!')
+app.use("/", express.static(this.path.join(__dirname, "./uploads")));
+app.use("/test", (req, resp) => {
+  resp.send("Hello world!");
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));

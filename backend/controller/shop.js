@@ -53,7 +53,7 @@ router.post("/create-shop", upload.single("file"), async (req, resp, next) => {
       zipCode: req.body.zipCode,
     };
     const activationToken = createActivationToken(seller);
-    const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
+    const activationUrl = `https://multivender-nine.vercel.app/seller/activation/${activationToken}`;
 
     await sendMail({
       email: seller.email,
