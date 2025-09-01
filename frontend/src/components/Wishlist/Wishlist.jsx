@@ -92,6 +92,8 @@ const Wish = ({ setOpenWish }) => {
 };
 
 const CartSingle = ({ data, removeFromWishListHandler, addToCartHandler }) => {
+
+
   const [value, setValue] = useState(1);
   const totalPrice = data.discountPrice * value;
   return (

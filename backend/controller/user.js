@@ -246,14 +246,15 @@ router.put(
       const existsAvatarPath = path.join(
         __dirname,
         "..",
-        existsUser.avatar.url
+        "uploads",
+        path.basename(existsUser.avatar.url)
       );
       fs.unlink(existsAvatarPath, (err) => {
         if (err) console.log("Failed to delete old avatar:", err.message);
       });
     }
 
-    const fileUrl = `/${req.file.filename}`; // save relative path
+    const fileUrl = `/uploads/${req.file.filename}`; // save relative path
     const user = await User.findByIdAndUpdate(
       req.user.id,
       { avatar: { url: fileUrl } }, // save as object
@@ -263,6 +264,7 @@ router.put(
     resp.status(200).json({ success: true, user });
   })
 );
+
 
 // UPDATE USER ADDRESSES
 router.put(
