@@ -94,7 +94,7 @@ const Header = ({ activeHeading }) => {
             />
 
             {/* Search Dropdown */}
-            {searchTerm && searchData?.length > 0 && (
+            {searchData && searchData?.length > 0 && (
               <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4 w-full">
                 {searchData.map((i, index) => {
                   return (

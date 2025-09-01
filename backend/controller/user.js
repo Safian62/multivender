@@ -5,14 +5,14 @@ const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
-
+const cloudinary = require("cloudinary");
 const router = express.Router();
 
 const User = require("../model/user");
 const ErrorHandler = require("../utils/ErrorHandler");
 const sendMail = require("../utils/sendMail");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
-
+s;
 // CREATE A USER
 router.post("/create-user", upload.single("file"), async (req, resp, next) => {
   try {
@@ -46,6 +46,9 @@ router.post("/create-user", upload.single("file"), async (req, resp, next) => {
 
       return next(new ErrorHandler("User already exists", 400));
     }
+    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+      folder: "avatars",
+    });
 
     const fileUrl = path.join("uploads", req.file.filename);
     const user = {
@@ -53,7 +56,8 @@ router.post("/create-user", upload.single("file"), async (req, resp, next) => {
       email,
       password,
       avatar: {
-        url: fileUrl,
+       public_id:myCloud.public_id,
+       url:myCloud.secure_url
       },
     };
 
