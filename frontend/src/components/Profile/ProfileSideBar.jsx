@@ -22,8 +22,12 @@ const ProfileSideBar = ({ setActive, active }) => {
       .get(`${server}/user/logout`, { withCredentials: true })
       .then((resp) => {
         toast.success(resp.data.message);
-        window.location.reload(true);
 
+        // Clear frontend state
+        dispatch({ type: "LOGOUT_USER" });
+        localStorage.removeItem("token");
+
+        // Redirect to login
         navigate("/login");
       })
       .catch((error) => {
@@ -31,6 +35,7 @@ const ProfileSideBar = ({ setActive, active }) => {
         toast.warning(message);
       });
   };
+
   return (
     <div className="w-[95%] bg-white shadow-sm rounded-[10px] p-4   ">
       {/* PROFILE ICON */}
@@ -156,7 +161,10 @@ const ProfileSideBar = ({ setActive, active }) => {
       {/* LOGOUT METHOD */}
       <div
         className="flex items-center cursor-pointer w-full mb-2 "
-        onClick={() => setActive(8) || logoutHandler()}
+        onClick={() => {
+          setActive(8);
+          logoutHandler();
+        }}
       >
         <AiOutlineLogout size={20} color={active === 8 ? "red" : ""} />
         <span
