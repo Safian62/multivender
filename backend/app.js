@@ -1,3 +1,4 @@
+// app.js
 const express = require("express");
 const ErrorHandler = require("./middleware/error");
 const app = express();
@@ -5,17 +6,18 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://multivender-kzk1.vercel.app/",
+    origin: "https://multivender-kzk1.vercel.app",
     credentials: true,
   })
 );
 app.use("/", express.static(path.join(__dirname, "./uploads")));
 app.use("/test", (req, resp) => {
-  resp.send("Hello world!"); 
+  resp.send("Hello world!");
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,7 +29,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   });
 }
 
-// IMPORTS ROUTES
+// IMPORT ROUTES
 const user = require("./controller/user");
 const shop = require("./controller/shop");
 const product = require("./controller/product");
@@ -50,6 +52,7 @@ app.use("/api/v2/conservation", conservation);
 app.use("/api/v2/message", message);
 app.use("/api/v2/withdraw", withdraw);
 
-//  FOR ERROR HANDLING
+// ERROR HANDLING
 app.use(ErrorHandler);
+
 module.exports = app;
