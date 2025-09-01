@@ -184,8 +184,9 @@ router.get(
       resp.cookie("token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        sameSite:"none",
+        secure:true
+        
       });
 
       resp.status(200).json({

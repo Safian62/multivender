@@ -353,7 +353,7 @@ const SellerInbox = ({
             >
               {item.sender !== sellerId && (
                 <img
-                  src="http://localhost:8000/uploads/Acter_1756116674724_485893333.jpg"
+                  src=""
                   alt=""
                   className="w-[40px] h-[40px]  rounded-full mr-3"
                 />
