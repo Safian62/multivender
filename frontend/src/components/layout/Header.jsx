@@ -16,7 +16,6 @@ import { CgProfile } from "react-icons/cg";
 import DropDown from "./DropDown";
 import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
-import { Avatar } from "../../assests/asset";
 import { RxCross1 } from "react-icons/rx";
 
 const Header = ({ activeHeading }) => {
@@ -32,7 +31,7 @@ const Header = ({ activeHeading }) => {
   const fullAvatarUrl =
     avatarUrl && !avatarUrl.startsWith("http")
       ? `${backend_url}${avatarUrl.startsWith("/") ? "" : "/"}${avatarUrl}`
-      : avatarUrl || Avatar;
+      : avatarUrl || null;
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
@@ -210,9 +209,6 @@ const Header = ({ activeHeading }) => {
                   <Link to="/profile">
                     <img
                       src={fullAvatarUrl}
-                      onError={(e) => {
-                        e.target.src = Avatar;
-                      }}
                       className="w-10 h-10 border-green-700 rounded-full border-3"
                       alt="User Avatar"
                     />
@@ -335,9 +331,6 @@ const Header = ({ activeHeading }) => {
                     <Link to="/profile">
                       <img
                         src={fullAvatarUrl}
-                        onError={(e) => {
-                          e.target.src = Avatar;
-                        }}
                         className="w-16 h-16 border-green-700 rounded-full border-3"
                         alt="User Avatar"
                       />

@@ -6,7 +6,6 @@ import { MdOutlineLocalOffer } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { backend_url } from "../../../server";
-import { Avatar } from "../../../assests/asset";
 
 const DashboardHeader = () => {
   const { seller } = useSelector((state) => state.seller);
@@ -14,7 +13,7 @@ const DashboardHeader = () => {
   const fullAvatarUrl =
     avatarUrl && !avatarUrl.startsWith("http")
       ? `${backend_url}${avatarUrl.startsWith("/") ? "" : "/"}${avatarUrl}`
-      : avatarUrl || Avatar;
+      : avatarUrl || null;
   return (
     <div className="w-full h-20 bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       {/* TOP LEFT LOGO  */}
@@ -69,9 +68,7 @@ const DashboardHeader = () => {
           <Link to={`/shop/${seller?._id}`}>
             <img
               src={fullAvatarUrl}
-              onError={(e) => {
-                e.target.src = Avatar;
-              }}
+
               className="w-10 h-10 border-green-700 rounded-full border-3"
               alt="User Avatar"
             />
