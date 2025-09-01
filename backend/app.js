@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://multivender-kzk1.vercel.app/",
+    origin: "https://multivender-kzk1.vercel.app",
     credentials: true,
   })
 );
