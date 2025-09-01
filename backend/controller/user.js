@@ -5,7 +5,6 @@ const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
-const cloudinary = require("cloudinary");
 const router = express.Router();
 
 const User = require("../model/user");
