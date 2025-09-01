@@ -13,10 +13,11 @@ import { TbAddressBook } from "react-icons/tb";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const ProfileSideBar = ({ setActive, active }) => {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch =useDispatch();
   const logoutHandler = () => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
