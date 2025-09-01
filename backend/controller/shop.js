@@ -178,8 +178,6 @@ router.get(
       resp.cookie("seller_token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       });
       resp.status(200).json({
         success: true,

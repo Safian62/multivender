@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
+import { loadShop } from "../../redux/actions/user";
 
 const ShopInfo = ({ isOwner }) => {
   const [data, setData] = useState({});
@@ -20,7 +21,6 @@ const ShopInfo = ({ isOwner }) => {
     avatarUrl && !avatarUrl.startsWith("http")
       ? `${backend_url}${avatarUrl.startsWith("/") ? "" : "/"}${avatarUrl}`
       : avatarUrl || Avatar;
-
   const { id } = useParams();
   useEffect(() => {
     dispatch(getAllProductsShop(id));
@@ -35,20 +35,22 @@ const ShopInfo = ({ isOwner }) => {
       });
   }, []);
 
-  const logoutHandler = () => {
-    axios
-      .get(`${server}/shop/logout`, { withCredentials: true })
-      .then((resp) => {
-        toast.success(resp.data.message);
-        window.location.reload(true);
+ const logoutHandler = async () => {
+  try {
+    const resp = await axios.get(`${server}/shop/logout`, {
+      withCredentials: true,
+    });
 
-        navigate("/shop-login");
-      })
-      .catch((error) => {
-        const message = error?.response?.data?.message || "Logout failed";
-        toast.warning(message);
-      });
-  };
+    toast.success(resp.data.message);
+
+    // full reload with redirect
+    window.location.href = "/shop-login";
+  } catch (error) {
+    const message = error?.response?.data?.message || "Logout failed";
+    toast.warning(message);
+  }
+};
+
 
   const totalReviewsLength =
     products &&
