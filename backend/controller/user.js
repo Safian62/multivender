@@ -179,14 +179,16 @@ router.get(
 router.get(
   "/logout",
   isAuthenticated,
-  catchAsyncError(async (req, resp, next) => {
+  catchAsyncError(async (req, res, next) => {
     try {
-      resp.cookie("token", null, {
+      res.cookie("token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
       });
 
-      resp.status(200).json({
+      res.status(200).json({
         success: true,
         message: "Logout successfully",
       });
