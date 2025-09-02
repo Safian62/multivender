@@ -1,4 +1,4 @@
-// CREATE TOKEN AND SAVE IT IN COOKIES
+  // CREATE TOKEN AND SAVE IT IN COOKIES
 
 const sendToken = (user, statusCode, resp) => {
   const token = user.getJwtToken(); // Assumes your User model has a method called getJwtToken()
