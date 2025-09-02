@@ -178,21 +178,21 @@ router.get(
 // LOGOUT METHOD
 router.get(
   "/logout",
+  isAuthenticated,
   catchAsyncError(async (req, res, next) => {
     try {
-      // Clear user token cookie
-      res.cookie("token", "", {
-        httpOnly: true,
-        expires: new Date(0),
-        sameSite: "none",
-        secure: true,
-        path: "/",
-      });
-
-
+     if (req.cookies) {
+        Object.keys(req.cookies).forEach((cookieName) => {
+          res.clearCookie(cookieName, {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+          });
+        });
+      }
       res.status(200).json({
         success: true,
-        message: "Logout successful, all cookies cleared",
+        message: "Logout successfully",
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
