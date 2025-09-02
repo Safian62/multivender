@@ -17,25 +17,23 @@ import { useSelector } from "react-redux";
 const ProfileSideBar = ({ setActive, active }) => {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
- 
-  const logoutHandler = async () => {
-    try {
-      // Call backend to clear HttpOnly cookies
-      await axios.get(`${server}/user/logout`, { withCredentials: true });
-
-      // Clear frontend storage
-      localStorage.clear();
-      sessionStorage.clear();
-
-      toast.success("Logout successful");
-
-      // Navigate to login page without full reload
-      navigate("/login", { replace: true });
-    } catch (error) {
-      console.log(error.response?.data?.message || error.message);
-    }
-  };
-
+ const logoutHandler = async () => {
+  try {
+    const res = await axios.get(`${server}/user/logout`, {
+      withCredentials: true,
+    });
+    console.log("response is for logout",res)
+    debugger;
+    toast.success(res.data.message);
+    debugger;
+    navigate("/login");
+    debugger;
+    window.location.reload(true);
+    debugger
+  } catch (error) {
+    console.log(error.response?.data?.message || error.message);
+  }
+};
 
 
   return (
