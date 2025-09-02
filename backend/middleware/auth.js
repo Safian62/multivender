@@ -1,57 +1,72 @@
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncError = require("./catchAsyncError");
 const jwt = require("jsonwebtoken");
-const User = require("../model/user"); // Capitalized by convention
+const User = require("../model/user");
 const Shop = require("../model/shop");
 
-exports.isAuthenticated = catchAsyncError(async (req, resp, next) => {
+// ----------------------------
+// Check if Normal User is Authenticated
+// ----------------------------
+exports.isAuthenticated = catchAsyncError(async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
     return next(new ErrorHandler("Please login to continue", 401));
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const user = await User.findById(decoded.id);
 
-  const user = await User.findById(decoded.id);
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
 
-  if (!user) {
-    return next(new ErrorHandler("User not found", 404));
+    req.user = user;
+    next();
+  } catch (err) {
+    return next(new ErrorHandler("Invalid or expired token", 401));
   }
-
-  req.user = user;
-
-  next();
 });
 
-exports.isSeller = catchAsyncError(async (req, resp, next) => {
+// ----------------------------
+// Check if Seller is Authenticated
+// ----------------------------
+exports.isSeller = catchAsyncError(async (req, res, next) => {
   const { seller_token } = req.cookies;
 
   if (!seller_token) {
     return next(new ErrorHandler("Please login to continue", 401));
   }
 
-  const decoded = jwt.verify(seller_token, process.env.JWT_SECRET_KEY);
+  try {
+    const decoded = jwt.verify(seller_token, process.env.JWT_SECRET_KEY);
+    const shop = await Shop.findById(decoded.id);
 
-  const shop = await Shop.findById(decoded.id);
+    if (!shop) {
+      return next(new ErrorHandler("Shop not found", 404));
+    }
 
-  if (!shop) {
-    return next(new ErrorHandler("Shop not found", 404));
+    req.seller = shop;
+    next();
+  } catch (err) {
+    return next(new ErrorHandler("Invalid or expired seller token", 401));
   }
-
-  req.seller = shop;
-
-  next();
 });
 
+// ----------------------------
+// Check if User is Admin
+// ----------------------------
 exports.isAdmin = (...roles) => {
-  return (req, resp, next) => {
-    if (!roles.includes(req.user.role)) {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
       return next(
-        new ErrorHandler(`${req.user.role} can not access this recourses`)
+        new ErrorHandler(
+          `${req.user?.role || "Guest"} cannot access this resource`,
+          403
+        )
       );
     }
-    next()
+    next();
   };
 };
- 
