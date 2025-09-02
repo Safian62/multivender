@@ -175,10 +175,15 @@ router.get(
   "/logout",
   catchAsyncError(async (req, resp, next) => {
     try {
-      resp.cookie("seller_token", null, {
-        expires: new Date(Date.now()),
-        httpOnly: true,
-      });
+     if (req.cookies) {
+        Object.keys(req.cookies).forEach((cookieName) => {
+          resp.clearCookie(cookieName, {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+          });
+        });
+      }
       resp.status(200).json({
         success: true,
         message: "Logout successfully",

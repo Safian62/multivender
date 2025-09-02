@@ -17,18 +17,19 @@ import { useSelector } from "react-redux";
 const ProfileSideBar = ({ setActive, active }) => {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const logoutHandler = () => {
-    axios
-      .get(`${server}/user/logout`, { withCredentials: true })
-      .then((res) => {
-        toast.success(res.data.message);
-        window.location.reload(true);
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.log(error.response.data.message);
-      });
-  };
+ const logoutHandler = async () => {
+  try {
+    const res = await axios.get(`${server}/user/logout`, {
+      withCredentials: true,
+    });
+    toast.success(res.data.message);
+    navigate("/login");
+    window.location.reload(true);
+  } catch (error) {
+    console.log(error.response?.data?.message || error.message);
+  }
+};
+
 
   return (
     <div className="w-[95%] bg-white shadow-sm rounded-[10px] p-4   ">
