@@ -3,7 +3,7 @@ const fs = require("fs");
 const multer = require("multer");
 
 // Absolute path to uploads folder
-const uploadDir = path.join(__dirname, "uploads");
+const uploadDir = path.join("/tmp", "uploads");
 
 // Make sure folder exists
 if (!fs.existsSync(uploadDir)) {
