@@ -14,10 +14,8 @@ const { isAuthenticated, isAdmin } = require("../middleware/auth");
 // CREATE A USER
 router.post("/create-user", upload.single("file"), async (req, resp, next) => {
   try {
-    console.log("REQ.BODY:", req.body);
-    console.log("REQ.FILE:", req.file);
+
     const filename = req.file?.filename;
-    console.log("upload file", filename);
 
     const { name, email, password } = req.body;
     const userEmail = await User.findOne({ email });
@@ -31,15 +29,13 @@ router.post("/create-user", upload.single("file"), async (req, resp, next) => {
         }`;
 
         try {
-          // Try to delete the uploaded file
           await fs.promises.unlink(filePath);
-          console.log(`✅ Deleted file: ${filename}`);
+          console.log(` Deleted file: ${filename}`);
         } catch (err) {
-          console.error(`⚠️ Failed to delete file (${filename}):`, err.message);
-          // Optional: Don't block user creation just because of file deletion failure
+          console.error(` Failed to delete file (${filename}):`, err.message);
         }
       } else {
-        console.warn("⚠️ No file found to delete.");
+        console.warn(" No file found to delete.");
       }
 
       return next(new ErrorHandler("User already exists", 400));
