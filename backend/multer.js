@@ -2,17 +2,15 @@ const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 
-// Absolute path to uploads folder
 const uploadDir = path.join("/tmp", "uploads");
 
-// Make sure folder exists
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, uploadDir); // write to backend/uploads
+    cb(null, uploadDir); 
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "_" + Math.round(Math.random() * 1e9);
