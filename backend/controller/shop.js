@@ -11,6 +11,7 @@ const Shop = require("../model/shop");
 const { upload } = require("../multer");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const sendShopToken = require("../utils/shopToken");
+const cloudinary = require('cloudinary')
 
 // CREATE SHOP
 router.post(
