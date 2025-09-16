@@ -16,25 +16,25 @@ const SignUp = () => {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
-    setAvatar(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setAvatar(reader.result); // ✅ base64 saved in state
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      if (fileReader.readyState === 2) {
-        const avatar = fileReader.result;
-        setAvatar(avatar);
-      }
-    };
-    fileReader.readAsDataURL(e?.target?.files[0]);
 
     const payload = {
       name,
       email,
       password,
-      avatar, // ✅ must match backend req.body.avatar
+      avatar, // ✅ already base64
     };
 
     axios
