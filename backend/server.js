@@ -1,8 +1,9 @@
 const app = require("./app");
 const connectDB = require("./db/dataBase");
 require("dotenv").config({
-  path: "backend/config/.env", // adjust if your file is located elsewhere
+  path: "backend/config/.env", 
 });
+const cloudinary = require("cloudinary");
 const express = require("express");
 const path = require("path");
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -22,6 +23,13 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 }
 // CONNECT DB
 connectDB();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_SECRET_KEY,
+});
+
 // CREATE SERVER
 
 const server = app.listen(process.env.PORT, () => {

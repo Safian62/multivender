@@ -6,54 +6,47 @@ const jwt = require("jsonwebtoken");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
 const router = express.Router();
-
 const User = require("../model/user");
 const ErrorHandler = require("../utils/ErrorHandler");
 const sendMail = require("../utils/sendMail");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
+const cloudinary = require("cloudinary");
+
 // CREATE A USER
-router.post("/create-user", upload.single("file"), async (req, resp, next) => {
+router.post("/create-user", async (req, resp, next) => {
   try {
+    const { name, email, password, avatar } = req.body;
+    // 🔹 avatar must be a BASE64 string or image URL
 
-    const filename = req.file?.filename;
-
-    const { name, email, password } = req.body;
+    // 🔎 Check if user already exists
     const userEmail = await User.findOne({ email });
-
     if (userEmail) {
-      const filename = req.file?.filename;
-
-      if (filename) {
-        const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${
-          req.file.filename
-        }`;
-
-        try {
-          await fs.promises.unlink(filePath);
-          console.log(` Deleted file: ${filename}`);
-        } catch (err) {
-          console.error(` Failed to delete file (${filename}):`, err.message);
-        }
-      } else {
-        console.warn(" No file found to delete.");
-      }
-
       return next(new ErrorHandler("User already exists", 400));
     }
+    let myCloud;
+    if (avatar) {
+      // ✅ Upload base64 image directly to Cloudinary
+       myCloud = await cloudinary.v2.uploader.upload(avatar, {
+        folder: "avatars",
+      });
+    }
 
-    const fileUrl = path.join("uploads", req.file.filename);
+    // ✅ Build user object
     const user = {
       name,
       email,
       password,
       avatar: {
-        url: fileUrl,
+        public_id: myCloud?.public_id || "",
+        url: myCloud?.secure_url || "",
       },
     };
 
+    // ✅ Generate activation token
     const activationToken = createActivationToken(user);
     const activationUrl = `https://multivender-kzk1.vercel.app/activation/${activationToken}`;
 
+    // ✅ Send activation email
     await sendMail({
       email: user.email,
       subject: "Activate your account",
@@ -68,7 +61,6 @@ router.post("/create-user", upload.single("file"), async (req, resp, next) => {
     return next(new ErrorHandler(error.message, 500));
   }
 });
-
 // CREATE ACTIVATION TOKEN
 const createActivationToken = (user) => {
   return jwt.sign(
