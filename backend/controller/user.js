@@ -18,7 +18,7 @@ router.post("/create-user", async (req, resp, next) => {
     const { name, email, password, avatar } = req.body;
     // 🔹 avatar must be a BASE64 string or image URL
 
-    // 🔎 Check if user already exists
+    // 🔎 Check if user already 
     const userEmail = await User.findOne({ email });
     if (userEmail) {
       return next(new ErrorHandler("User already exists", 400));
