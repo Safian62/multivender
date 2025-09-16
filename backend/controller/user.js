@@ -18,7 +18,7 @@ router.post("/create-user", async (req, resp, next) => {
     const { name, email, password, avatar } = req.body;
     // 🔹 avatar must be a BASE64 string or image URL
 
-    // 🔎 Check if user already 
+    // 🔎 Check if user already
     const userEmail = await User.findOne({ email });
     if (userEmail) {
       return next(new ErrorHandler("User already exists", 400));
@@ -26,7 +26,7 @@ router.post("/create-user", async (req, resp, next) => {
     let myCloud;
     if (avatar) {
       // ✅ Upload base64 image directly to Cloudinary
-       myCloud = await cloudinary.v2.uploader.upload(avatar, {
+      myCloud = await cloudinary.v2.uploader.upload(avatar, {
         folder: "avatars",
       });
     }
@@ -226,40 +226,48 @@ router.put(
   })
 );
 
-// UPDATE USER AVATAR
 router.put(
   "/update-avatar",
   isAuthenticated,
-  upload.single("image"),
-  catchAsyncError(async (req, resp, next) => {
+  upload.single("image"), // frontend must send "image"
+  catchAsyncError(async (req, res, next) => {
     if (!req.file) {
       return next(new ErrorHandler("No file uploaded", 400));
     }
 
     const existsUser = await User.findById(req.user.id);
 
-    // Delete old avatar if exists
-    if (existsUser.avatar && existsUser.avatar.url) {
-      const existsAvatarPath = path.join(
-        __dirname,
-        "..",
-        existsUser.avatar.url
-      );
-      fs.unlink(existsAvatarPath, (err) => {
-        if (err) console.log("Failed to delete old avatar:", err.message);
-      });
+    // 🔥 Delete old avatar from Cloudinary if exists
+    if (existsUser.avatar && existsUser.avatar.public_id) {
+      await cloudinary.uploader.destroy(existsUser.avatar.public_id);
     }
 
-    const fileUrl = `/${req.file.filename}`; // save relative path
+    // ✅ Upload new avatar to Cloudinary
+    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+      folder: "avatars",
+    });
+
+    // ✅ Save new avatar details
     const user = await User.findByIdAndUpdate(
       req.user.id,
-      { avatar: { url: fileUrl } }, // save as object
+      {
+        avatar: {
+          url: uploadResult.secure_url,
+          public_id: uploadResult.public_id,
+        },
+      },
       { new: true }
     );
 
-    resp.status(200).json({ success: true, user });
+    res.status(200).json({
+      success: true,
+      message: "Avatar updated successfully",
+      user,
+    });
   })
 );
+
+export default router;
 
 // UPDATE USER ADDRESSES
 router.put(
