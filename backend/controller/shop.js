@@ -13,62 +13,58 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const sendShopToken = require("../utils/shopToken");
 
 // CREATE SHOP
-router.post("/create-shop", upload.single("file"), async (req, resp, next) => {
-  try {
-    const { email } = req.body;
-    const sellerEmail = await Shop.findOne({ email });
-    if (sellerEmail) {
-      const filename = req.file?.filename;
+router.post(
+  "/create-shop",
+  upload.single("file"),
+  catchAsyncError(async (req, res, next) => {
+    try {
+      const { name, email, password, address, phoneNumber, zipCode } = req.body;
 
-      if (filename) {
-        const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${
-          req.file.filename
-        }`;
-
-        try {
-          // Try to delete the uploaded file
-          await fs.promises.unlink(filePath);
-          console.log(`✅ Deleted file: ${filename}`);
-        } catch (err) {
-          console.error(`⚠️ Failed to delete file (${filename}):`, err.message);
-          // Optional: Don't block user creation just because of file deletion failure
-        }
-      } else {
-        console.warn("⚠️ No file found to delete.");
+      const sellerEmail = await Shop.findOne({ email });
+      if (sellerEmail) {
+        return next(new ErrorHandler("Shop already exists", 400));
       }
 
-      return next(new ErrorHandler("User already exists", 400));
+      let myCloud;
+      if (req.file) {
+        myCloud = await cloudinary.uploader.upload(req.file.path, {
+          folder: "shops",
+        });
+      }
+
+      const seller = {
+        name,
+        email,
+        password,
+        address,
+        phoneNumber,
+        zipCode,
+        avatar: {
+          public_id: myCloud?.public_id || "",
+          url: myCloud?.secure_url || "",
+        },
+      };
+
+      // ✅ Generate activation token
+      const activationToken = createActivationToken(seller);
+      const activationUrl = `https://multivender-kzk1.vercel.app/seller/activation/${activationToken}`;
+
+      // ✅ Send activation mail
+      await sendMail({
+        email: seller.email,
+        subject: "Activate your Shop",
+        message: `Hello ${seller.name}, please click the link to activate your shop: ${activationUrl}`,
+      });
+
+      res.status(201).json({
+        success: true,
+        message: `Please check your email (${seller.email}) to activate your shop.`,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 400));
     }
-
-    const fileUrl = path.join("uploads", req.file.filename);
-    const seller = {
-      name: req.body.name,
-      email: email,
-      password: req.body.password,
-      avatar: {
-        url: fileUrl,
-      },
-      address: req.body.address,
-      phoneNumber: req.body.phoneNumber,
-      zipCode: req.body.zipCode,
-    };
-    const activationToken = createActivationToken(seller);
-    const activationUrl = `https://multivender-kzk1.vercel.app/seller/activation/${activationToken}`;
-
-    await sendMail({
-      email: seller.email,
-      subject: "Activate your Shop",
-      message: `Hello ${seller.name}, please click the link to activate your Shop: ${activationUrl}`,
-    });
-
-    resp.status(201).json({
-      success: true,
-      message: `Please check your email (${seller.email}) to activate your Shop.`,
-    });
-  } catch (error) {
-    return next(new ErrorHandler(error.message, 400));
-  }
-});
+  })
+);
 
 // CREATE ACTIVATION TOKEN
 const createActivationToken = (seller) => {
@@ -222,33 +218,39 @@ router.put(
   "/update-shop-avatar",
   isSeller,
   upload.single("image"),
-  catchAsyncError(async (req, resp, next) => {
+  catchAsyncError(async (req, res, next) => {
     if (!req.file) {
       return next(new ErrorHandler("No file uploaded", 400));
     }
 
-    const existsSeller = await Shop.findById(req.seller._id);
+    const shop = await Shop.findById(req.seller._id);
 
-    // Delete old avatar if exists
-    if (existsSeller.avatar && existsSeller.avatar.url) {
-      const existsAvatarPath = path.join(
-        __dirname,
-        "..",
-        existsSeller.avatar.url
-      );
-      fs.unlink(existsAvatarPath, (err) => {
-        if (err) console.log("Failed to delete old avatar:", err.message);
-      });
+    if (!shop) {
+      return next(new ErrorHandler("Shop not found", 404));
     }
 
-    const fileUrl = `uploads/${req.file.filename}`; // save relative path
-    const shop = await Shop.findByIdAndUpdate(
-      req.seller._id,
-      { avatar: { url: fileUrl } }, // save as object
-      { new: true }
-    );
+    // Delete old avatar if exists
+    if (shop.avatar && shop.avatar.public_id) {
+      await cloudinary.uploader.destroy(shop.avatar.public_id);
+    }
 
-    resp.status(200).json({ success: true, shop });
+    // Upload new avatar
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "shops",
+    });
+
+    shop.avatar = {
+      public_id: result.public_id,
+      url: result.secure_url,
+    };
+
+    await shop.save();
+
+    res.status(200).json({
+      success: true,
+      shop,
+      message: "Shop avatar updated successfully",
+    });
   })
 );
 

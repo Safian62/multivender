@@ -19,44 +19,44 @@ const ShopCreate = () => {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
-    setAvatar(file);
+    if (file) setAvatar(file);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ frontend validation
     if (!phoneNum || isNaN(phoneNum)) {
       toast.error("Please enter a valid phone number");
       return;
     }
 
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
     const newForm = new FormData();
     newForm.append("file", avatar);
     newForm.append("name", name);
     newForm.append("email", email);
     newForm.append("password", password);
     newForm.append("zipCode", zipCode);
-    newForm.append("phoneNumber", phoneNum); // ✅ will now always send a string number
+    newForm.append("phoneNumber", phoneNum);
     newForm.append("address", address);
 
-    axios
-      .post(`${server}/shop/create-shop`, newForm, config)
-      .then((resp) => {
-        toast.success(resp.data.message);
-        // ✅ Reset form
-        setName("");
-        setEmail("");
-        setPassword("");
-        setAvatar(null);
-        setZipCode("");
-        setAddress("");
-        setPhoneNum(""); // ✅ reset to empty string
-      })
-      .catch((err) => {
-        toast.error(err.response?.data?.message || "Something went wrong");
+    try {
+      const resp = await axios.post(`${server}/shop/create-shop`, newForm, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
+
+      toast.success(resp.data.message);
+
+      // Reset form
+      setName("");
+      setEmail("");
+      setPassword("");
+      setAvatar(null);
+      setZipCode("");
+      setAddress("");
+      setPhoneNum("");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
@@ -176,7 +176,7 @@ const ShopCreate = () => {
                 <span className="inline-block h-8 w-8 rounded-full overflow-hidden">
                   {avatar ? (
                     <img
-                      src={URL.createObjectURL(avatar)}
+                      src={avatar}
                       alt="avatar"
                       className="h-full w-full object-cover rounded-full"
                     />

@@ -18,28 +18,27 @@ const ShopSettingComp = () => {
   const [zipCode, setZipCode] = useState(seller && seller.phoneNumber);
 
   const dispatch = useDispatch();
-  const handleImage = async (e) => {
-    const file = e.target.files[0];
-    setAvatar(file);
+ const handleImage = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  setAvatar(file);
 
-    const formData = new FormData();
-    formData.append("image", e.target.files[0]);
-    await axios
-      .put(`${server}/shop/update-shop-avatar`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      })
-      .then((resp) => {
-        toast.success("Avatar updated successfully");
+  const formData = new FormData();
+  formData.append("image", file);
 
-        dispatch(loadShop());
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
-  };
+  try {
+    const resp = await axios.put(`${server}/shop/update-shop-avatar`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
+    });
+
+    toast.success(resp.data.message || "Avatar updated successfully");
+    dispatch(loadShop());
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Avatar update failed");
+  }
+};
+
 
   const updateHandler = async (e) => {
     e.preventDefault();
