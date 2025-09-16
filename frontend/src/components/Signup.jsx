@@ -20,24 +20,29 @@ const SignUp = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
-    const newForm = new FormData();
-    newForm.append("file", avatar);
-    newForm.append("name", name);
-    newForm.append("email", email);
-    newForm.append("password", password);
+
+    // 🔹 Convert file into base64
+
+    const payload = {
+      name,
+      email,
+      password,
+      avatar, // ✅ must match backend req.body.avatar
+    };
 
     axios
-      .post(`${server}/user/create-user`, newForm, config)
+      .post(`${server}/user/create-user`, payload, {
+        headers: { "Content-Type": "application/json" },
+      })
       .then((resp) => {
         toast.success(resp.data.message);
         setName("");
         setEmail("");
         setPassword("");
-        setAvatar();
+        setAvatar(null);
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        toast.error(err.response?.data?.message || "Something went wrong");
       });
   };
 
