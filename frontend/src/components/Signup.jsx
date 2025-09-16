@@ -28,7 +28,7 @@ const SignUp = () => {
         setAvatar(avatar);
       }
     };
-    fileReader.readAsDataURL(e.target.files[0]);
+    fileReader.readAsDataURL(e?.target?.files[0]);
 
     const payload = {
       name,
