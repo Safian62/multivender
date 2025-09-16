@@ -18,27 +18,30 @@ const ShopSettingComp = () => {
   const [zipCode, setZipCode] = useState(seller && seller.phoneNumber);
 
   const dispatch = useDispatch();
- const handleImage = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  setAvatar(file);
+  const handleImage = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setAvatar(file);
 
-  const formData = new FormData();
-  formData.append("image", file);
+    const formData = new FormData();
+    formData.append("image", file);
 
-  try {
-    const resp = await axios.put(`${server}/shop/update-shop-avatar`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-      withCredentials: true,
-    });
+    try {
+      const resp = await axios.put(
+        `${server}/shop/update-shop-avatar`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
 
-    toast.success(resp.data.message || "Avatar updated successfully");
-    dispatch(loadShop());
-  } catch (err) {
-    toast.error(err.response?.data?.message || "Avatar update failed");
-  }
-};
-
+      toast.success(resp.data.message || "Avatar updated successfully");
+      dispatch(loadShop());
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Avatar update failed");
+    }
+  };
 
   const updateHandler = async (e) => {
     e.preventDefault();
@@ -70,11 +73,7 @@ const ShopSettingComp = () => {
         <div className="w-full flex items-center justify-center relative">
           <div className="relative">
             <img
-              src={
-                avatar
-                  ? URL.createObjectURL(avatar)
-                  : `${backend_url}/${seller.avatar.url}`
-              }
+              src={`${seller?.avatar?.url}`}
               alt=""
               className="w-[200px] h-[200px] rounded-full cursor-pointer"
             />
