@@ -21,7 +21,14 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔹 Convert file into base64
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      if (fileReader.readyState === 2) {
+        const avatar = fileReader.result;
+        setAvatar(avatar);
+      }
+    };
+    fileReader.readAsDataURL(e.target.files[0]);
 
     const payload = {
       name,

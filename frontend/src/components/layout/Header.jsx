@@ -27,11 +27,6 @@ const Header = ({ activeHeading }) => {
 
   const { allProducts } = useSelector((state) => state.products);
 
-  const avatarUrl = user?.avatar?.url;
-  const fullAvatarUrl =
-    avatarUrl && !avatarUrl.startsWith("http")
-      ? `${backend_url}${avatarUrl.startsWith("/") ? "" : "/"}${avatarUrl}`
-      : avatarUrl || null;
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
@@ -107,7 +102,7 @@ const Header = ({ activeHeading }) => {
                     >
                       <div className="w-full flex items-start py-3">
                         <img
-                          src={`${backend_url}/${i.images[0]}`}
+                          src={`${i.images[0].url}`}
                           className="w-[40px] h-[40px] mr-[10px] object-cover"
                           alt={i.name}
                         />
@@ -208,7 +203,7 @@ const Header = ({ activeHeading }) => {
                 {isAuthenticated ? (
                   <Link to="/profile">
                     <img
-                      src={fullAvatarUrl}
+                      src={user?.avatar?.url}
                       className="w-10 h-10 border-green-700 rounded-full border-3"
                       alt="User Avatar"
                     />
@@ -330,7 +325,7 @@ const Header = ({ activeHeading }) => {
                   <div className="mt-10">
                     <Link to="/profile">
                       <img
-                        src={fullAvatarUrl}
+                        src={user?.avatar?.url}
                         className="w-16 h-16 border-green-700 rounded-full border-3"
                         alt="User Avatar"
                       />
