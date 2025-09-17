@@ -18,6 +18,7 @@ router.post(
   catchAsyncError(async (req, resp, next) => {
     try {
       const {
+        shopId,
         name,
         description,
         category,
@@ -26,7 +27,7 @@ router.post(
         discountPrice,
         stock,
       } = req.body;
-      const shopId = req.seller._id;
+
       const shop = await Shop.findById(shopId);
       if (!shop) {
         return next(new ErrorHandler("Shop id is invalid", 400));
