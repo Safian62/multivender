@@ -33,7 +33,7 @@ const ProductCard = ({ data, isEvent }) => {
   }, [wishList]);
 
   // Safe access with optional chaining and default values
-  const imageUrl = data?.images?.[0] ? `${backend_url}/${data.images[0]}` : "";
+  const imageUrl = data?.images?.[0]
   const shopName = data?.shop?.name || "Unknown Shop";
   const dispatch = useDispatch();
 
