@@ -40,10 +40,7 @@ router.post(
           const myCloud = await cloudinary.v2.uploader.upload(file.path, {
             folder: "products",
           });
-          imagesLinks.push({
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
-          });
+          imagesUrls.push(myCloud.secure_url); // ✅ only URL
         }
       }
 
@@ -56,7 +53,7 @@ router.post(
         originalPrice,
         discountPrice,
         stock,
-        shopId:shop._id,
+        shopId: shop._id,
         shop,
         images: imagesLinks,
       });
