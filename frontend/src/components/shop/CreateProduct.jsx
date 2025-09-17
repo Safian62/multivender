@@ -27,16 +27,17 @@ const CreateProduct = () => {
     if (success) {
       toast.success("Product created Successfuly");
       navigate("/dashboard");
-      window.location.reload()
+      window.location.reload();
     }
   }, [dispatch, error, success]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const newForm = new FormData();
 
     images.forEach((image) => {
-      newForm.append("images", image);
+      newForm.append("images", image); // multiple images
     });
     newForm.append("name", name);
     newForm.append("description", description);
@@ -46,14 +47,17 @@ const CreateProduct = () => {
     newForm.append("discountPrice", discountPrice);
     newForm.append("stock", stock);
     newForm.append("shopId", seller._id);
+
+    // Dispatch the Redux action
     dispatch(createProduct(newForm));
   };
 
   const handleImageSubmit = (e) => {
     e.preventDefault();
-    let files = Array.from(e.target.files);
+    const files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
   };
+
   return (
     <div className=" w-[90%] 800px:w-[50%] bg-white shadow h-[80vh] p-3 overflow-y-scroll">
       <h5 className="text-xl font-Poppins text-center">Create Product</h5>
