@@ -15,7 +15,7 @@ const EventPage = () => {
       dispatch(getAllEvents());
     }
   }, [dispatch, allEvents]);
-  if (isLoading) return <div>Loading...</div>;
+
 
   return (
     <div>

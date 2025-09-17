@@ -24,10 +24,8 @@ const ProductDetailCard = ({ setOpen, data }) => {
   const { cart } = useSelector((state) => state.cart);
   const { wishList } = useSelector((state) => state.wishList);
 
-  const imageUrl = data?.images?.[0] ? `${backend_url}/${data.images[0]}` : "";
-  const shopAvatarUrl = data?.shop?.avatar
-    ? `${backend_url}/${data.shop.avatar.url}`
-    : `${process.env.PUBLIC_URL}/images/default-avatar.png`;
+  const imageUrl = data?.images?.[0]
+  const shopAvatarUrl = data?.shop?.avatar?.url
   useEffect(() => {
     if (wishList && wishList.find((i) => i._id === data._id)) {
       setClick(true);

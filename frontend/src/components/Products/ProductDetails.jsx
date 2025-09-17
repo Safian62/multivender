@@ -41,7 +41,7 @@ const ProductDetails = ({ data }) => {
     // eslint-disable-next-line
   }, [wishList, data]);
 
-  const shopAvatarUrl = data?.shop?.avatar
+  const shopAvatarUrl = data?.shop?.avatar?.url;
 
   function increment() {
     setCount(count + 1);
@@ -74,8 +74,7 @@ const ProductDetails = ({ data }) => {
       toast.error("Please login to countinue.");
     }
   };
-  const imageUrl = data?.images[select]
-   
+  const imageUrl = data?.images[select];
 
   const removeFromWishListHandler = (data) => {
     setClick(!click);
@@ -122,7 +121,11 @@ const ProductDetails = ({ data }) => {
             <div className=" w-full 800px:flex">
               {/* LEFT SIDE CONTENT */}
               <div className="w-full 800px:[50%]">
-                <img src={imageUrl} alt="" className="w-[80%] h-[60vh] rounded object-contain" />
+                <img
+                  src={imageUrl}
+                  alt=""
+                  className="w-[80%] h-[60vh] rounded object-contain"
+                />
                 <div className="w-[90%] border mt-5 overflow-x-auto">
                   <div className="flex flex-nowrap">
                     {data &&

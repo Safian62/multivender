@@ -292,7 +292,7 @@ const MessageList = ({
     >
       <div className="relative">
         <img
-          src={`${backend_url}/${seller?.avatar?.url}`}
+          src={`${seller?.avatar?.url}`}
           className="w-[50px] h-[50px] rounded-full"
           alt=""
         />
@@ -335,7 +335,7 @@ const UserInboxC = ({
       <div className="w-full flex items-center justify-between bg-slate-200 p-3">
         <div className="flex">
           <img
-            src={`${backend_url}/${seller?.avatar?.url}`}
+            src={`${seller?.avatar?.url}`}
             className="w-[50px] h-[50px] rounded-full"
             alt=""
           />
@@ -362,7 +362,7 @@ const UserInboxC = ({
             >
               {item.sender !== userId && (
                 <img
-                  src={`${backend_url}/${seller?.avatar?.url}`}
+                  src={`${seller?.avatar?.url}`}
                   alt=""
                   className="w-[40px] h-[40px] rounded-full mr-3"
                 />
@@ -370,7 +370,7 @@ const UserInboxC = ({
 
               {item.images && (
                 <img
-                  src={`${backend_url}/${item.images}`}
+                  src={`${item.images}`}
                   className="w-[250px] h-[250px] object-cover rounded-[10px] ml-3 mb-2"
                   alt=""
                 />
