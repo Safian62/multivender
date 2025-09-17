@@ -40,7 +40,7 @@ router.post(
           const myCloud = await cloudinary.v2.uploader.upload(file.path, {
             folder: "products",
           });
-          imagesUrls.push(myCloud.secure_url); // ✅ only URL
+          imagesLinks.push(myCloud.secure_url); // ✅ only URL
         }
       }
 
