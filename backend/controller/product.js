@@ -56,6 +56,7 @@ router.post(
         originalPrice,
         discountPrice,
         stock,
+        shopId:shop._id,
         shop,
         images: imagesLinks,
       });
