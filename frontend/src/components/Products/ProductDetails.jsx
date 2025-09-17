@@ -9,7 +9,6 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import Rating from "./rating";
-import { backend_url, server } from "../../server";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToWishList,
@@ -42,8 +41,6 @@ const ProductDetails = ({ data }) => {
   }, [wishList, data]);
 
   const shopAvatarUrl = data?.shop?.avatar
-    ? `${backend_url}/${data.shop.avatar.url}`
-    : `${process.env.PUBLIC_URL}/images/default-avatar.png`;
 
   function increment() {
     setCount(count + 1);
@@ -77,8 +74,7 @@ const ProductDetails = ({ data }) => {
     }
   };
   const imageUrl = data?.images[select]
-    ? `${backend_url}/${data.images[select]}`
-    : "";
+   
 
   const removeFromWishListHandler = (data) => {
     setClick(!click);
@@ -137,7 +133,7 @@ const ProductDetails = ({ data }) => {
                           } cursor-pointer m-2 flex-shrink-0`}
                         >
                           <img
-                            src={`${backend_url}/${i}`}
+                            src={`${i}`}
                             alt={`image-${index}`}
                             className="h-[200px] w-[200px] object-contain"
                             onClick={() => setSelect(index)}
@@ -322,7 +318,7 @@ const ProductDetailsInfo = ({
             data?.reviews?.map((item, index) => (
               <div className="w-full flex my-2">
                 <img
-                  src={`${backend_url}/${item.user.avatar}`}
+                  src={`${item.user.avatar}`}
                   alt=""
                   className="w-[50px] h-[50px] rounded-full "
                 />
@@ -345,7 +341,7 @@ const ProductDetailsInfo = ({
             <Link to={`/shop/preview/${data.shop._id}`}>
               <div className="flex items-center">
                 <img
-                  src={`${backend_url}/${data?.shop?.avatar?.url}`}
+                  src={`${data?.shop?.avatar?.url}`}
                   className="w-[50px] h-[50px] rounded-full"
                   alt=""
                 />
