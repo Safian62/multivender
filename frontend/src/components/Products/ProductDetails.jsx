@@ -17,6 +17,7 @@ import {
 import { toast } from "react-toastify";
 import { addToCart } from "../../redux/actions/cart";
 import axios from "axios";
+import { server } from "../../server";
 
 const ProductDetails = ({ data }) => {
   const { products } = useSelector((state) => state.products);
