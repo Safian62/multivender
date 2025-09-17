@@ -9,6 +9,7 @@ const Shop = require("../model/shop");
 const { isSeller, isAuthenticated, isAdmin } = require("../middleware/auth");
 const fs = require("fs");
 const path = require("path");
+const cloudinary = require('cloudinary')
 
 // CREATE A NEW  PRODUCT
 router.post(
