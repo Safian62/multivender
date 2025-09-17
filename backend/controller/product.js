@@ -9,7 +9,7 @@ const Shop = require("../model/shop");
 const { isSeller, isAuthenticated, isAdmin } = require("../middleware/auth");
 const fs = require("fs");
 const path = require("path");
-const cloudinary = require('cloudinary')
+const cloudinary = require("cloudinary");
 
 // CREATE A NEW  PRODUCT
 router.post(
@@ -18,7 +18,6 @@ router.post(
   catchAsyncError(async (req, resp, next) => {
     try {
       const {
-        shopId,
         name,
         description,
         category,
@@ -27,7 +26,7 @@ router.post(
         discountPrice,
         stock,
       } = req.body;
-
+      const shopId = req.seller._id;
       const shop = await Shop.findById(shopId);
       if (!shop) {
         return next(new ErrorHandler("Shop id is invalid", 400));
