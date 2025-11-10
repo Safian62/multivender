@@ -1,0 +1,64 @@
+{
+  "becomeSeller": "Become Seller",
+  "search_placeholder": "Search products...",
+  "dashboard": "Dashboard",
+  "nav": {
+    "home": "Home",
+    "best_selling": "Best Selling",
+    "products": "Products",
+    "events": "Events",
+    "faq": "FAQ"
+  },
+  "AllCategory": "All Categories",
+  "HomeTitle": "Best Collection For Home Decoration",
+  "HomeDesc": "Welcome to our multi-vendor marketplace — a one-stop destination where trusted sellers bring you quality products, exclusive deals, and endless variety, all in one place. Shop smart, shop secure, and experience the joy of choice.",
+  "HomeBtn": "Shop Now",
+
+  "brand": {
+    "shipping":"Free Shipping",
+    "shipDesc":"From all order over 100$",
+    "surprise":"Daily Surprise Offers",
+    "surpDesc":"Save up to 25% off",
+    "affoard":"Affoardable Prices",
+    "affDesc":"Get Factory direct price",
+    "secure":"Secure Payments",
+    "secDesc":"100% protected Payments"
+  },
+  "category": {
+    "mobile": "Mobile & Tablets",
+    "computer": "Computers & Laptops",
+    "accessories": "Accessories",
+    "music": "Music & Audio",
+    "cloths": "Cloths",
+    "shoes": "Shoes",
+    "gifts": "Gifts",
+    "pet": "Pets Care",
+    "others": "Others"
+  },
+  "footer": {
+    "subscribe": "Subscribe",
+    "getUpdates": "us to get News, Events and Offers",
+    "enterEmail": "Enter your email...",
+    "submit": "Submit",
+    "description": "The home and elements needed to create beautiful products.",
+    "company": "Company",
+    "shop": "Shop",
+    "support": "Support",
+    "game": "Game & Video",
+    "phone": "Phone & Tablets",
+    "computer": "Computers & Laptop",
+    "watch": "Sport Watches",
+    "events": "Events",
+    "rights": "© 2025 Commerce. All rights reserved.",
+    "terms": "Terms . Privacy Policy",
+    "about": "About Us",
+    "careers": "Careers",
+    "store": "Store Locations",
+    "blog": "Our Blog",
+    "faq": "FAQ",
+    "reviews": "Reviews",
+    "contact": "Contact Us",
+    "shipping": "Shipping",
+    "chat": "Live Chat"
+  }
+}

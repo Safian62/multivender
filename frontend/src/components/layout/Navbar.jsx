@@ -1,22 +1,27 @@
 import React from "react";
 import styles from "../../styles/style";
 import { navItems } from "../../static/data";
-import { Link } from "react-router-dom";
+import LocalizedLink from "../LocalizedLink";
+import { useTranslation } from "react-i18next";
 
 const Navbar = ({ active }) => {
+  const { t } = useTranslation();
+  const items = navItems(t);
   return (
     <div className={`block 800px:${styles.normalFlex}`}>
-      {navItems &&
-        navItems.map((i, index) => (
+      {items &&
+        items.map((i, index) => (
           <div className="flex" key={index}>
-            <Link
+            <LocalizedLink
               to={i.url}
               className={`${
-                active === index + 1 ? "text-[#17dd1f]" : "text-black 800px:text-[#fff]"
-            } pb-[30px]  800px:pb-0 px-2 mx-4 font-[500] cursor-pointer `}
+                active === index + 1
+                  ? "text-[#17dd1f]"
+                  : "text-black 800px:text-[#fff]"
+              } pb-[30px]  800px:pb-0 px-2 mx-4 font-[500] cursor-pointer `}
             >
               {i.title}
-            </Link>
+            </LocalizedLink>
           </div>
         ))}
     </div>

@@ -93,26 +93,50 @@ const App = () => {
                   </ProtectedRout>
                 }
               />
+              <Route
+                path="/:lng/payment"
+                element={
+                  <ProtectedRout>
+                    <PaymentPage />
+                  </ProtectedRout>
+                }
+              />
             </Routes>
           </Elements>
         )}
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/:lng/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/:lng/login" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/:lng/sign-up" element={<SignUpPage />} />
           <Route
             path="/activation/:activation_token"
+            element={<ActivationPage />}
+          />
+          <Route
+            path="/:lng/activation/:activation_token"
             element={<ActivationPage />}
           />
           <Route
             path="/seller/activation/:activation_token"
             element={<SellerActivationPage />}
           />
+          <Route
+            path="/:lng/seller/activation/:activation_token"
+            element={<SellerActivationPage />}
+          />
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/:lng/products" element={<ProductsPage />} />
           <Route path="/product/:id" element={<ProductDetailsPage />} />
+          <Route path="/:lng/product/:id" element={<ProductDetailsPage />} />
           <Route path="/best-selling" element={<BestSellingPage />} />
+          <Route path="/:lng/best-selling" element={<BestSellingPage />} />
           <Route path="events" element={<EventsPage />} />
+          <Route path="/:lng/events" element={<EventsPage />} />
           <Route path="/faq" element={<FaqPage />} />
+          <Route path="/:lng/faq" element={<FaqPage />} />
           <Route
             path="/checkout"
             element={
@@ -121,9 +145,26 @@ const App = () => {
               </ProtectedRout>
             }
           />
+          <Route
+            path="/:lng/checkout"
+            element={
+              <ProtectedRout>
+                <CheckoutPage />
+              </ProtectedRout>
+            }
+          />
           <Route path="/order/success" element={<OrderSuccessPage />} />
+          <Route path="/:lng/order/success" element={<OrderSuccessPage />} />
           <Route
             path="/profile"
+            element={
+              <ProtectedRout>
+                <ProfilePage />
+              </ProtectedRout>
+            }
+          />
+          <Route
+            path="/:lng/profile"
             element={
               <ProtectedRout>
                 <ProfilePage />
@@ -139,7 +180,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/inbox"
+            element={
+              <ProtectedRout>
+                <UserInbox />
+              </ProtectedRout>
+            }
+          />
+          <Route
             path="/user/order/:id"
+            element={
+              <ProtectedRout>
+                <OrderDetailsPage />
+              </ProtectedRout>
+            }
+          />
+          <Route
+            path="/:lng/user/order/:id"
             element={
               <ProtectedRout>
                 <OrderDetailsPage />
@@ -148,13 +205,25 @@ const App = () => {
           />
           {/* SHOP ROUTE */}
           <Route path="/shop-create" element={<ShopCreatePage />} />
+          <Route path="/:lng/shop-create" element={<ShopCreatePage />} />
           <Route path="/shop-login" element={<ShopLoginPage />} />
+          <Route path="/:lng/shop-login" element={<ShopLoginPage />} />
 
           <Route path="/shop/:id" element={<ShopHomePage />} />
+          <Route path="/:lng/shop/:id" element={<ShopHomePage />} />
           <Route path="/shop/preview/:id" element={<ShopPreviewPage />} />
+          <Route path="/:lng/shop/preview/:id" element={<ShopPreviewPage />} />
 
           <Route
             path="/dashboard"
+            element={
+              <SellerProtectedRout>
+                <ShopDashboardPage />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
+            path="/:lng/dashboard"
             element={
               <SellerProtectedRout>
                 <ShopDashboardPage />
@@ -170,7 +239,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/settings"
+            element={
+              <SellerProtectedRout>
+                <ShopSettings />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
             path="/order/:id"
+            element={
+              <SellerProtectedRout>
+                <ShopOrderDetails />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
+            path="/:lng/order/:id"
             element={
               <SellerProtectedRout>
                 <ShopOrderDetails />
@@ -186,7 +271,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/user/track/order/:id"
+            element={
+              <protectedRout>
+                <TrackOrderPage />
+              </protectedRout>
+            }
+          />
+          <Route
             path="/dashboard-create-product"
+            element={
+              <SellerProtectedRout>
+                <ShopCreateProduct />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
+            path="/:lng/dashboard-create-product"
             element={
               <SellerProtectedRout>
                 <ShopCreateProduct />
@@ -202,7 +303,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/dashboard-products"
+            element={
+              <SellerProtectedRout>
+                <ShopAllProducts />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
             path="/dashboard-orders"
+            element={
+              <SellerProtectedRout>
+                <ShopAllOrders />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
+            path="/:lng/dashboard-orders"
             element={
               <SellerProtectedRout>
                 <ShopAllOrders />
@@ -218,7 +335,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/dashboard-refunds"
+            element={
+              <SellerProtectedRout>
+                <ShopAllRefunds />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
             path="/dashboard-create-event"
+            element={
+              <SellerProtectedRout>
+                <ShopCreateEvents />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
+            path="/:lng/dashboard-create-event"
             element={
               <SellerProtectedRout>
                 <ShopCreateEvents />
@@ -235,7 +368,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/dashboard-events"
+            element={
+              <SellerProtectedRout>
+                <ShopAllEvents />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
             path="/dashboard-coupons"
+            element={
+              <SellerProtectedRout>
+                <ShopAllcoupons />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
+            path="/:lng/dashboard-coupons"
             element={
               <SellerProtectedRout>
                 <ShopAllcoupons />
@@ -251,7 +400,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/dashboard-messages"
+            element={
+              <SellerProtectedRout>
+                <ShopInboxPage />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
             path="/dashboard-withdraw-money"
+            element={
+              <SellerProtectedRout>
+                <ShopWithdrawMoneyPage />
+              </SellerProtectedRout>
+            }
+          />
+          <Route
+            path="/:lng/dashboard-withdraw-money"
             element={
               <SellerProtectedRout>
                 <ShopWithdrawMoneyPage />
@@ -270,7 +435,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/admin/dashboard"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardPage />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
             path="/admin-users"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardUsers />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/:lng/admin-users"
             element={
               <ProtectedAdminRoute>
                 <AdminDashboardUsers />
@@ -286,7 +467,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/admin-sellers"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardSellers />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
             path="/admin-products"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardProducts />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/:lng/admin-products"
             element={
               <ProtectedAdminRoute>
                 <AdminDashboardProducts />
@@ -302,6 +499,14 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/admin-orders"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardOrders />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
             path="/admin-events"
             element={
               <ProtectedAdminRoute>
@@ -310,7 +515,23 @@ const App = () => {
             }
           />
           <Route
+            path="/:lng/admin-events"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardEvents />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
             path="/admin-withdraw-request"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardWithdraw />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/:lng/admin-withdraw-request"
             element={
               <ProtectedAdminRoute>
                 <AdminDashboardWithdraw />

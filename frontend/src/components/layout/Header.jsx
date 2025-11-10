@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { categoriesData } from "../../static/data";
 import Cart from "../Cart/Cart";
 import Wish from "../Wishlist/Wishlist.jsx";
-import { backend_url } from "../../server.js";
+import { useTranslation } from "react-i18next";
+
 import {
   AiOutlineHeart,
   AiOutlineSearch,
@@ -19,6 +20,7 @@ import { useSelector } from "react-redux";
 import { RxCross1 } from "react-icons/rx";
 
 const Header = ({ activeHeading }) => {
+  const { t, i18n } = useTranslation();
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const { isSeller } = useSelector((state) => state.seller);
 
@@ -77,7 +79,7 @@ const Header = ({ activeHeading }) => {
           <div className="w-[50%] relative">
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder={t("search_placeholder")}
               value={searchTerm}
               onChange={handleSearchChange}
               className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
@@ -114,12 +116,44 @@ const Header = ({ activeHeading }) => {
               </div>
             )}
           </div>
+          {/* LANGUAGE TOGGLE */}
+          <div className="ml-4">
+            <select
+              value={i18n.language || "en"}
+              onChange={(e) => {
+                const newLng = e.target.value;
+                // update the URL first: if first segment is a supported lang, replace it,
+                // otherwise add it as the first segment. Keep search/hash.
+                try {
+                  const supported = ["en", "ur", "ar"];
+                  const { pathname, search, hash } = window.location;
+                  const segs = pathname.split("/").filter(Boolean);
+                  if (segs.length > 0 && supported.includes(segs[0])) {
+                    segs[0] = newLng;
+                  } else {
+                    segs.unshift(newLng);
+                  }
+                  const newPath = "/" + segs.join("/") + (search || "") + (hash || "");
+                  // pushState to avoid full reload
+                  window.history.pushState(null, "", newPath);
+                } catch (err) {
+                  // ignore if window not defined
+                }
+                i18n.changeLanguage(newLng);
+              }}
+              className="px-3 py-1 bg-white text-[#3321c8] rounded-md font-semibold border border-[#3321c8] focus:outline-none"
+            >
+              <option value="en">EN</option>
+              <option value="ur">اردو</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
 
           {/* BECOME SELLER */}
           <div className={`${styles.button}`}>
             <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
               <h1 className="text-[#fff] flex items-center">
-                {isSeller ? "Dashboard" : "Become Seller "}{" "}
+                {isSeller ? t("dashboard") : t("becomeSeller")}
                 <IoIosArrowForward className="ml-1 mt-1" />
               </h1>
             </Link>
@@ -143,7 +177,7 @@ const Header = ({ activeHeading }) => {
           >
             <BiMenuAltLeft size={30} className="absolute top-3 left-2" />
             <button className="h-[100%] w-[70%] justify-between pl-5 items-center bg-white font-sanstext-lg font-[500] select-none rounded-t-md">
-              All Categories
+              {t("AllCategory")}
             </button>
             <IoIosArrowDown
               className="absolute right-2 top-4 cursor-pointer"

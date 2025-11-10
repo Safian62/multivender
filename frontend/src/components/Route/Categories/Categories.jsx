@@ -2,8 +2,10 @@ import React from "react";
 import styles from "../../../styles/style";
 import { brandingData, categoriesData } from "../../../static/data";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Categories = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <>
@@ -17,8 +19,8 @@ const Categories = () => {
               <div className="flex items-start" key={index}>
                 {i.icon}
                 <div className="px-3">
-                  <h3 className="font-bold text-sm md:text-base">{i.title}</h3>
-                  <p className="text-xs md:text-sm">{i.Description}</p>
+                  <h3 className="font-bold text-sm md:text-base">{ t(i.title)}</h3>
+                  <p className="text-xs md:text-sm">{t(i.Description)}</p>
                 </div>
               </div>
             ))}
@@ -42,7 +44,7 @@ const Categories = () => {
                   key={i.id}
                   onClick={() => handleSubmit(i)}
                 >
-                  <h5 className={`text-[18px] leading-[1.3]`}>{i.title}</h5>
+                  <h5 className={`text-[18px] leading-[1.3]`}>{t(i.title)}</h5>
                   <img
                     src={i.image_Url}
                     alt=""
